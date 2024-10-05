@@ -21,7 +21,8 @@ EcoDex is an advanced waste management platform that integrates robotics, machin
 
 ### 4. **Real-time Location Tracking**
    - View the live location of RAG-ED robots on an interactive map. EcoDex uses **Leaflet.js** to provide users with a detailed map interface to track robot movement in real-time.
-
+###5. **Manual Override Mode**
+   -In our bot we also introduces a feauture of Manual Overriding , and now the user can See the Real Time Feed and control the bot according to his/her commands. This mode will generally be used when our Bot needs to be serviced or any Technical Glitch Happened somewhere.
 ### 5. **Waste Categorization**
    - RAG-ED robots are equipped with an object detection model that identifies waste and segregates it based on type, including:
      - **Plastic**
