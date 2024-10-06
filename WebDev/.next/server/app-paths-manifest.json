@@ -1,0 +1,9 @@
+{
+  "/records/page": "app/records/page.js",
+  "/api/users/current/route": "app/api/users/current/route.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/(root)/page": "app/(root)/page.js",
+  "/(root)/reports/page": "app/(root)/reports/page.js",
+  "/signin/page": "app/signin/page.js",
+  "/(root)/map/page": "app/(root)/map/page.js"
+}

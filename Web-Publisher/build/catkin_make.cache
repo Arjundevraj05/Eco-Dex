@@ -1,0 +1,2 @@
+
+-DCATKIN_DEVEL_PREFIX=/home/ayush3112/RAG_ws/devel -DCMAKE_INSTALL_PREFIX=/home/ayush3112/RAG_ws/install -G Unix Makefiles
