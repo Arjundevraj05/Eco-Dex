@@ -6,6 +6,7 @@ servo clawR;
 Servo clawL;
 Servo Bin;
 Servo camera;
+int StepperPos = 0;
 bool Biodegradble = false;
 //Stepper Pins
 const int motorPin1 = 14;  // IN1
@@ -98,9 +99,20 @@ void loop() {
     else if(ch=='b'){
       CameraDown();
       
+      
 
     }
     else if(ch=='c'){
+      LidDown();
+      While(true){
+        if(StepperPos == 50){
+          ClawOpen();
+        }
+    
+      }
+      closeClaw();
+      LidOpen();
+
 
       
 
