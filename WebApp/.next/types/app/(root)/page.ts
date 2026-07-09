@@ -1,4 +1,4 @@
-// File: C:\Users\Arjun\Desktop\BankEase Copies\Nexathon\EcoDex\web-dev\app\(root)\page.tsx
+// File: D:\Applications\Eco-Dex\WebApp\app\(root)\page.tsx
 import * as entry from '../../../../app/(root)/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

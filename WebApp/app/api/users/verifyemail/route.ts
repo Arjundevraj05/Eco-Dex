@@ -2,10 +2,9 @@ import { connect } from "@/dbConfig/dbConfig";
 import { NextRequest, NextResponse } from "next/server";
 import User from "@/models/userModel";
 
-connect();
-
 export async function POST(request: NextRequest) {
     try {
+        await connect();
         const reqBody = await request.json();
         const { token } = reqBody;
         console.log(token);

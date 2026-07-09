@@ -1,33 +1,36 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
+import { isDemoMode } from "@/helper/demoMode";
 
-const MONGODB_URI = process.env.MONGODB_URI!;
-
-if (!MONGODB_URI) {
-  throw new Error("MONGODB_URI is not defined in environment variables");
-}
+let listenersAttached = false;
 
 export async function connect() {
-  try {
-    if (mongoose.connection.readyState >= 1) {
-      console.log("Already connected to MongoDB");
-      return;
-    }
+  if (isDemoMode()) {
+    return;
+  }
 
-    await mongoose.connect(MONGODB_URI, {
-      serverSelectionTimeoutMS: 10000, // 10 seconds timeout
-    });
+  const MONGODB_URI = process.env.MONGODB_URI;
 
-    mongoose.connection.on('connected', () => {
+  if (!MONGODB_URI) {
+    throw new Error("MONGODB_URI is not defined in environment variables");
+  }
+
+  if (mongoose.connection.readyState >= 1) {
+    return;
+  }
+
+  if (!listenersAttached) {
+    mongoose.connection.on("connected", () => {
       console.log("MongoDB Connected");
     });
 
-    mongoose.connection.on('error', (err) => {
+    mongoose.connection.on("error", (err) => {
       console.error("MongoDB Connection Error:", err);
-      process.exit(1);
     });
 
-  } catch (error) {
-    console.error("Error in connecting to MongoDB:", error);
-    process.exit(1);
+    listenersAttached = true;
   }
+
+  await mongoose.connect(MONGODB_URI, {
+    serverSelectionTimeoutMS: 10000,
+  });
 }

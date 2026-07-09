@@ -1,4 +1,7 @@
 WebApp/node_modules/
+WebApp/.next/
+WebApp/.env
+WebApp/.env.local
 
 # ignore build install and log files
 raged-ros2/build/

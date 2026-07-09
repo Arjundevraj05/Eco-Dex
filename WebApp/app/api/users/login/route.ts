@@ -5,14 +5,24 @@ import { NextResponse } from "next/server";
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { serialize } from 'cookie';
+import { withDemoCookies } from "@/helper/demoAuth";
+import { getDemoAuth } from "@/helper/demoAuth";
+import { isDemoMode } from "@/helper/demoMode";
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
-// Ensure the database is connected
-await connect();
-
 export async function POST(request: Request) {
+    if (isDemoMode()) {
+        const response = NextResponse.json({
+            message: "Demo login successful",
+            success: true,
+            user: getDemoAuth(),
+        });
+        return withDemoCookies(response);
+    }
+
     try {
+        await connect();
         const reqBody = await request.json();
         const { email, password } = reqBody;
 
@@ -37,13 +47,6 @@ export async function POST(request: Request) {
             { expiresIn: '1h' }
         );
 
-        // Set token in a cookie
-        const cookie = serialize('auth_token', token, {
-            httpOnly: true,
-            maxAge: 3600,
-            path: '/'
-        });
-
         const response = NextResponse.json({
             message: "Login successful",
             success: true,
@@ -52,9 +55,22 @@ export async function POST(request: Request) {
                 username: user.username
             }
         });
-        
-        // Attach the cookie to the response
-        response.headers.append('Set-Cookie', cookie);
+
+        const cookieOptions = {
+            httpOnly: true,
+            maxAge: 3600,
+            path: '/',
+        };
+
+        response.headers.append(
+            'Set-Cookie',
+            serialize('auth_token', token, cookieOptions)
+        );
+        response.headers.append(
+            'Set-Cookie',
+            serialize('username', user.username, cookieOptions)
+        );
+
         return response;
     } catch (err: unknown) { // Use 'unknown' instead of 'any'
         console.error("Login error:", err);

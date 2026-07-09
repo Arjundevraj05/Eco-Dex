@@ -1,4 +1,4 @@
-// File: C:\Users\Arjun\Desktop\BankEase Copies\Nexathon\EcoDex\web-dev\app\layout.tsx
+// File: D:\Applications\Eco-Dex\WebApp\app\layout.tsx
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

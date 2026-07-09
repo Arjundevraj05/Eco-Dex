@@ -1,22 +1,32 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
+import { isDemoMode } from "@/helper/demoMode";
 
 export async function POST(req: NextRequest) {
-    try {
-        const { command } = await req.json();
-        
-        // Replace with your Ngrok or Flask backend URL
-        const flaskApiUrl = "https://your-ngrok-url.ngrok-free.app/api/override";
+  try {
+    const { command } = await req.json();
 
-        const response = await fetch(flaskApiUrl, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ command }),
+    if (isDemoMode()) {
+      if (["LOCK", "UNLOCK", "ALERT"].includes(command)) {
+        return NextResponse.json({
+          message: "Command received (demo)",
+          status: command,
         });
-
-        const data = await response.json();
-        return NextResponse.json(data);
-    } catch (err) { // Renamed 'error' to 'err' to avoid linting issues
-        console.error("Error sending override command:", err); // Logs the error for debugging
-        return NextResponse.json({ error: "Failed to send override command" }, { status: 500 });
+      }
+      return NextResponse.json({ error: "Invalid command" }, { status: 400 });
     }
+
+    const flaskApiUrl = `${process.env.FLASK_BACKEND_URL || "http://localhost:5000"}/api/override`;
+
+    const response = await fetch(flaskApiUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ command }),
+    });
+
+    const data = await response.json();
+    return NextResponse.json(data, { status: response.status });
+  } catch (err) {
+    console.error("Error sending override command:", err);
+    return NextResponse.json({ error: "Failed to send override command" }, { status: 500 });
+  }
 }

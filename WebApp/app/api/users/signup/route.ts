@@ -3,41 +3,37 @@ import User from "@/models/userModel";
 import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import mongoose from "mongoose";
-
-console.log("MONGODB_URI:", process.env.MONGODB_URI); // Debugging MongoDB URI
-
-await connect();
+import { SAMPLE_WASTE_RECORDS } from "@/helper/seedWasteRecords";
+import { withDemoCookies } from "@/helper/demoAuth";
+import { getDemoAuth } from "@/helper/demoAuth";
+import { isDemoMode } from "@/helper/demoMode";
 
 export async function POST(request: NextRequest) {
+    if (isDemoMode()) {
+        const response = NextResponse.json({
+            message: "Demo account ready",
+            success: true,
+            savedUser: getDemoAuth(),
+        });
+        return withDemoCookies(response);
+    }
+
     try {
+        await connect();
         const reqBody = await request.json();
         const { username, email, password } = reqBody;
 
-        console.log("Received request body:", reqBody); // Log the request body
-
-        const collectionName = `${username}.botids`;
-
-        // Get list of collections
-
-        const db = mongoose.connection.db;
-
-        if (!db) {
-            return NextResponse.json({ error: "Database not connected" }, { status: 500 });
+        if (!username?.trim() || !email?.trim() || !password?.trim()) {
+            return NextResponse.json({ error: "All fields are required" }, { status: 400 });
         }
 
-        const collections = await db.listCollections().toArray();
+        const trimmedUsername = username.trim();
+        const trimmedEmail = email.trim().toLowerCase();
 
-        const exists = collections.some(col => col.name === collectionName);
-
-        if (!exists) {
-            console.log(`Required collection '${collectionName}' does not exist.`)
-            return NextResponse.json({ error: `Required collection '${collectionName}' does not exist.` }, { status: 400 });
-        }
-
-        // Check if user already exists
-        const existingUser = await User.findOne({ email });
+        const existingUser = await User.findOne({
+            $or: [{ email: trimmedEmail }, { username: trimmedUsername }],
+        });
         if (existingUser) {
-            console.log("User already exists"); // Log user existence
             return NextResponse.json({ error: "User already exists" }, { status: 400 });
         }
 
@@ -47,21 +43,24 @@ export async function POST(request: NextRequest) {
 
         // Create a new user
         const newUser = new User({
-            username,
-            email: email.trim().toLowerCase(), // Normalize email
+            username: trimmedUsername,
+            email: trimmedEmail,
             password: hashedPassword,
             isVerified: true,
             isAdmin: false,
         });
 
         const savedUser = await newUser.save();
-        console.log("User saved to DB:", savedUser); // Log saved user details
 
-        // Create a unique collection for the user
-        const userWasteCollection = mongoose.connection.collection(`${username}_waste_records`);
-        await userWasteCollection.createIndex({ _id: 1 });
+        const userWasteCollection = mongoose.connection.collection(
+            `${trimmedUsername}_waste_records`
+        );
+        const existingRecords = await userWasteCollection.countDocuments();
+        if (existingRecords === 0) {
+            await userWasteCollection.insertMany(SAMPLE_WASTE_RECORDS);
+        }
 
-        const userKeys = mongoose.connection.collection(`${username}_keys`);
+        const userKeys = mongoose.connection.collection(`${trimmedUsername}_keys`);
         await userKeys.createIndex({ _id: 1 });
 
         // Respond with success message

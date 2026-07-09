@@ -1,0 +1,51 @@
+export const SAMPLE_WASTE_RECORDS = [
+  {
+    Class: "PLASTIC",
+    isBiodegradable: false,
+    Latitude: 12.9716,
+    Longitude: 77.5946,
+    Day: "Monday",
+  },
+  {
+    Class: "PAPER",
+    isBiodegradable: true,
+    Latitude: 12.972,
+    Longitude: 77.595,
+    Day: "Tuesday",
+  },
+  {
+    Class: "METAL",
+    isBiodegradable: false,
+    Latitude: 12.973,
+    Longitude: 77.596,
+    Day: "Wednesday",
+  },
+  {
+    Class: "CARDBOARD",
+    isBiodegradable: true,
+    Latitude: 12.974,
+    Longitude: 77.597,
+    Day: "Thursday",
+  },
+  {
+    Class: "GLASS",
+    isBiodegradable: false,
+    Latitude: 12.975,
+    Longitude: 77.598,
+    Day: "Friday",
+  },
+  {
+    Class: "PLASTIC",
+    isBiodegradable: false,
+    Latitude: 12.976,
+    Longitude: 77.599,
+    Day: "Saturday",
+  },
+  {
+    Class: "PAPER",
+    isBiodegradable: true,
+    Latitude: 12.977,
+    Longitude: 77.6,
+    Day: "Sunday",
+  },
+];

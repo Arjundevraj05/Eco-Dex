@@ -1,4 +1,4 @@
-// File: C:\Users\Arjun\Desktop\BankEase Copies\Nexathon\EcoDex\web-dev\app\api\users\current\route.ts
+// File: D:\Applications\Eco-Dex\WebApp\app\api\users\current\route.ts
 import * as entry from '../../../../../../app/api/users/current/route.js'
 import type { NextRequest } from 'next/server.js'
 

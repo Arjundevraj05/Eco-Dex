@@ -1,10 +1,16 @@
 export const fetchUsername = async () => {
-    // Fetch the username
-    const response = await fetch('/api/user');
+    const response = await fetch('/api/user', { credentials: 'include' });
+    if (!response.ok) {
+        return null;
+    }
+
     const data = await response.json();
     const username = data.username;
 
-    // Call the save-username API route to export the username
+    if (!username) {
+        return null;
+    }
+
     await fetch('/api/save-username', {
         method: 'POST',
         headers: {

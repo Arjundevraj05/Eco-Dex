@@ -1,9 +1,8 @@
 'use client';
 import { useEffect, useRef } from 'react';
-import L, { LatLngTuple } from 'leaflet';
+import L, { LatLngTuple, Map as LeafletMap } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-// Custom marker icon using a CDN
 const customIcon = new L.Icon({
   iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
@@ -17,43 +16,56 @@ interface MapComponentProps {
   locations: { lat: number; lng: number }[];
 }
 
+const DEFAULT_CENTER: LatLngTuple = [12.9716, 77.5946];
+
 const MapComponent: React.FC<MapComponentProps> = ({ locations }) => {
-  const mapRef = useRef<L.Map | null>(null);
+  const mapRef = useRef<LeafletMap | null>(null);
+  const markersRef = useRef<L.FeatureGroup | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (mapRef.current) return; // Prevent reinitialization
+    if (!containerRef.current || mapRef.current) return;
 
-    const map = L.map('map').setView([0, 0], 2);
+    const map = L.map(containerRef.current).setView(DEFAULT_CENTER, 12);
     mapRef.current = map;
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors',
     }).addTo(map);
 
-    const markers = L.featureGroup();
+    markersRef.current = L.featureGroup().addTo(map);
 
-    locations.forEach(({ lat, lng }) => {
+    return () => {
+      map.remove();
+      mapRef.current = null;
+      markersRef.current = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    const markers = markersRef.current;
+    if (!map || !markers) return;
+
+    markers.clearLayers();
+
+    locations.forEach(({ lat, lng }, index) => {
       const coordinates: LatLngTuple = [lat, lng];
       L.marker(coordinates, { icon: customIcon })
         .addTo(markers)
-        .bindPopup(`Waste Location`);
+        .bindPopup(`Waste pickup #${index + 1}`);
     });
-
-    markers.addTo(map);
 
     if (locations.length > 1) {
       map.fitBounds(markers.getBounds(), { padding: [50, 50] });
     } else if (locations.length === 1) {
-      map.setView([locations[0].lat, locations[0].lng], 13);
+      map.setView([locations[0].lat, locations[0].lng], 14);
+    } else {
+      map.setView(DEFAULT_CENTER, 12);
     }
-
-    return () => {
-      map.remove();
-      mapRef.current = null; // Cleanup when unmounting
-    };
   }, [locations]);
 
-  return <div id="map" className="h-full w-full" />;
+  return <div ref={containerRef} className="h-full w-full rounded-lg" />;
 };
 
 export default MapComponent;

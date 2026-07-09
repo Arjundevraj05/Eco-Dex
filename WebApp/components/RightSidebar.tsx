@@ -1,19 +1,40 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaRobot, FaRegChartBar, FaBell, FaArrowLeft, FaArrowRight, FaRecycle, FaTrash } from 'react-icons/fa';
-import Chatbot from './Chatbot'; // Import the Chatbot component
+
+interface WasteRecord {
+  Class: 'PLASTIC' | 'METAL' | 'PAPER' | 'CARDBOARD' | 'GLASS';
+}
 
 const RightSidebar = () => {
-    const [isExpanded, setIsExpanded] = useState(false); // Controls sidebar expansion
+    const [isExpanded, setIsExpanded] = useState(false);
+    const [plasticKg, setPlasticKg] = useState(0);
+    const [metalKg, setMetalKg] = useState(0);
+    const [totalItems, setTotalItems] = useState(0);
+
+    useEffect(() => {
+        const fetchStats = async () => {
+            try {
+                const response = await fetch('/api/users/current', { credentials: 'include' });
+                if (!response.ok) return;
+                const data: WasteRecord[] = await response.json();
+                setTotalItems(data.length);
+                setPlasticKg(data.filter((item) => item.Class === 'PLASTIC').length);
+                setMetalKg(data.filter((item) => item.Class === 'METAL').length);
+            } catch {
+                // Keep defaults when unauthenticated or offline
+            }
+        };
+        fetchStats();
+    }, []);
 
     return (
         <div
             className={`fixed inset-y-0 right-0 transform transition-transform duration-300 ease-in-out bg-white shadow-lg z-100 ${
                 isExpanded ? 'translate-x-0 w-48' : 'translate-x-[5%] w-14'
             } border-l`}
-            style={{ zIndex: 1000 }} // Ensure the sidebar stays visible
+            style={{ zIndex: 1000 }}
         >
-            {/* Toggle Button */}
             <div
                 className="absolute top-1/2 transform -translate-y-1/2 left-[-16px] bg-green-500 p-2 rounded-full cursor-pointer shadow-lg hover:bg-green-600 transition-colors"
                 onClick={() => setIsExpanded(!isExpanded)}
@@ -21,9 +42,7 @@ const RightSidebar = () => {
                 {isExpanded ? <FaArrowRight className="text-white" /> : <FaArrowLeft className="text-white" />}
             </div>
 
-            {/* Sidebar Content when expanded */}
             <div className={`p-4 ${isExpanded ? 'block' : 'hidden'} transition-opacity duration-300`}>
-                {/* Bot Status Section */}
                 <div className="mb-6 border-b pb-4">
                     <h2 className="font-semibold text-base text-green-700 flex items-center mb-3 font-poppins">
                         <FaRobot className="mr-2 text-green-700" /> Bot Status
@@ -31,22 +50,23 @@ const RightSidebar = () => {
                     <p className="text-sm font-light font-poppins text-gray-700">
                         Status: <span className="font-medium text-green-700">Active</span>
                     </p>
+                    <p className="text-sm font-light font-poppins text-gray-700">
+                        Items collected: <span className="font-medium text-green-700">{totalItems}</span>
+                    </p>
                 </div>
 
-                {/* Waste Collection Section */}
                 <div className="mb-6 border-b pb-4">
                     <h2 className="font-semibold text-base text-green-700 flex items-center mb-3 font-poppins">
                         <FaTrash className="mr-2 text-green-700" /> Waste Collection
                     </h2>
                     <p className="text-sm font-light font-poppins text-gray-700">
-                        Plastic: <span className="font-medium text-green-700">20 kg</span>
+                        Plastic: <span className="font-medium text-green-700">{plasticKg} items</span>
                     </p>
                     <p className="text-sm font-light font-poppins text-gray-700">
-                        Metal: <span className="font-medium text-green-700">10 kg</span>
+                        Metal: <span className="font-medium text-green-700">{metalKg} items</span>
                     </p>
                 </div>
 
-                {/* Alerts Section */}
                 <div className="mb-6 border-b pb-4">
                     <h2 className="font-semibold text-base text-green-700 flex items-center mb-3 font-poppins">
                         <FaBell className="mr-2 text-green-700" /> Alerts
@@ -54,7 +74,6 @@ const RightSidebar = () => {
                     <p className="text-sm font-light font-poppins text-gray-700">No alerts at this time.</p>
                 </div>
 
-                {/* Upcoming Section */}
                 <div className="mb-6 border-b pb-4">
                     <h2 className="font-semibold text-base text-green-700 flex items-center mb-3 font-poppins">
                         <FaRegChartBar className="mr-2 text-green-700" /> Upcoming
@@ -64,7 +83,6 @@ const RightSidebar = () => {
                     </p>
                 </div>
 
-                {/* Tips Section */}
                 <div className="mb-6 border-b pb-4">
                     <h2 className="font-semibold text-base text-green-700 flex items-center mb-3 font-poppins">
                         <FaRecycle className="mr-2 text-green-700" /> Tips
@@ -73,7 +91,6 @@ const RightSidebar = () => {
                 </div>
             </div>
 
-            {/* Sidebar Icons in Collapsed Mode */}
             <div className={`p-4 ${!isExpanded ? 'block' : 'hidden'} transition-opacity duration-300`}>
                 <div className="mb-6 flex justify-center">
                     <FaRobot className="text-green-700 text-xl hover:scale-125 hover:text-green-600 transition-transform duration-200 ease-in-out" />
@@ -90,11 +107,6 @@ const RightSidebar = () => {
                 <div className="mb-6 flex justify-center">
                     <FaRecycle className="text-green-700 text-xl hover:scale-125 hover:text-green-600 transition-transform duration-200 ease-in-out" />
                 </div>
-            </div>
-
-            {/* Add the Chatbot Component at the bottom of the sidebar */}
-            <div className={`p-4 ${isExpanded ? 'block' : 'hidden'} transition-opacity duration-300`}>
-                <Chatbot />
             </div>
         </div>
     );

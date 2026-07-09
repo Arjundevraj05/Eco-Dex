@@ -6,21 +6,6 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/signin/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/signin/layout.js"
-    ],
-    "/signin/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/signin/page.js"
-    ],
-    "/api/users/login/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/users/login/route.js"
-    ],
     "/(root)/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
@@ -46,11 +31,6 @@
       "static/chunks/main-app.js",
       "static/chunks/app/api/save-username/route.js"
     ],
-    "/api/users/logout/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/users/logout/route.js"
-    ],
     "/(root)/reports/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
@@ -66,6 +46,11 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(root)/livecam/page.js"
+    ],
+    "/(root)/override/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(root)/override/page.js"
     ],
     "/_not-found/page": [
       "static/chunks/webpack.js",

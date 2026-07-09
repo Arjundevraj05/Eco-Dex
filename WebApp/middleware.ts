@@ -1,30 +1,40 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { withDemoCookies } from "@/helper/demoAuth";
+import { DEMO_AUTH_TOKEN, isDemoMode } from "@/helper/demoMode";
 
 export function middleware(request: NextRequest) {
   const authToken = request.cookies.get("auth_token")?.value;
-  const isAuthenticated = !!authToken;
+  const isAuthenticated =
+    !!authToken && (!isDemoMode() || authToken === DEMO_AUTH_TOKEN);
 
-  // Define protected and auth routes
   const protectedRoutes = ["/", "/livecam", "/map", "/override", "/reports"];
   const authRoutes = ["/signin", "/signup"];
-
   const { pathname } = request.nextUrl;
 
-  // Redirect unauthenticated users from protected routes
+  if (isDemoMode()) {
+    if (authRoutes.includes(pathname)) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+
+    if (!isAuthenticated && protectedRoutes.includes(pathname)) {
+      return withDemoCookies(NextResponse.next());
+    }
+
+    return NextResponse.next();
+  }
+
   if (!isAuthenticated && protectedRoutes.includes(pathname)) {
     return NextResponse.redirect(new URL("/signin", request.url));
   }
 
-  // Redirect authenticated users away from auth pages
   if (isAuthenticated && authRoutes.includes(pathname)) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  return NextResponse.next(); // Continue as normal
+  return NextResponse.next();
 }
 
-// Apply middleware to all routes
 export const config = {
   matcher: ["/", "/livecam", "/map", "/override", "/reports", "/signin", "/signup"],
 };

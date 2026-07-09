@@ -23,11 +23,10 @@ const SignIn = () => {
             console.log("Login success", response.data);
             toast.success("Login success");
             router.push("/");
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                console.log("Login failed", error.message);
-                toast.error(error.message);
-            }
+        } catch (error) {
+            const err = error as import("axios").AxiosError<{ error?: string }>;
+            const message = err.response?.data?.error || "Login failed. Please try again.";
+            toast.error(message);
         } finally {
             setLoading(false);
         }

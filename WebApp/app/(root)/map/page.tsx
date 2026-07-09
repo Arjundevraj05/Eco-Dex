@@ -13,13 +13,12 @@ const Page = () => {
   useEffect(() => {
     const fetchWasteRecords = async () => {
       try {
-        const response = await fetch('/api/users/current');
+        const response = await fetch('/api/users/current', { credentials: 'include' });
         if (!response.ok) {
           throw new Error('Failed to fetch records');
         }
         const data: WasteRecord[] = await response.json();
 
-        // Extract only latitude & longitude from records
         const filteredLocations = data
           .filter((item) => item.Latitude !== undefined && item.Longitude !== undefined)
           .map((item) => ({

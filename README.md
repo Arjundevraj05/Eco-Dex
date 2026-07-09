@@ -185,6 +185,52 @@ theta = (width_of_frame / Hfov) * (centre_of_screen - centre_of_bounding_box)
 
 ---
 
+## Quick Start (Web Dashboard)
+
+### Demo mode (no database — for recruiters / portfolio)
+
+Deploy or run with sample data only. No MongoDB, login, or robot required.
+
+```powershell
+cd WebApp
+npm install
+$env:DEMO_MODE="true"; npm run dev
+```
+
+Open the URL shown in the terminal — you land directly on the dashboard with simulated waste collection data.
+
+**Deploy to Vercel:**
+
+1. Import the repo and set the root directory to `WebApp`
+2. Add environment variable: `DEMO_MODE` = `true`
+3. Deploy — no other env vars needed
+
+### Full mode (with MongoDB)
+
+```powershell
+cd WebApp
+npm install
+npm run dev:local
+```
+
+Open `http://localhost:3000` (or the port shown in the terminal). Sign up with any username/email/password — sample waste data is seeded automatically for new users.
+
+For production or a real MongoDB Atlas cluster, copy `WebApp/.env.example` to `WebApp/.env.local`, set `MONGODB_URI`, then:
+
+```powershell
+npm run build
+npm start
+```
+
+Optional Flask override backend (for `/override`):
+
+```powershell
+pip install -r stone-security-backend/requirements.txt
+python stone-security-backend/server.py
+```
+
+---
+
 ## Contributors
 - [**Ayush Acharya**](https://github.com/ayushacharya27)  
 - [**Joel Dantis**](https://github.com/joeldantis)  

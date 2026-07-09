@@ -24,9 +24,12 @@ export default function Signup() {
             console.log("Signup success", response.data);
             router.push("/signin");
         } catch (error) {
-            const err = error as AxiosError<{ message: string }>;
-            console.log("Signup failed", err.response?.data?.message || err.message);
-            toast.error(err.response?.data?.message || "Signup failed. Please try again.");
+            const err = error as AxiosError<{ error?: string; message?: string }>;
+            const message =
+                err.response?.data?.error ||
+                err.response?.data?.message ||
+                "Signup failed. Please try again.";
+            toast.error(message);
         } finally {
             setLoading(false);
         }

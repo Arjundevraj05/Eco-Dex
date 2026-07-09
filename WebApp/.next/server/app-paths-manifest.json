@@ -1,11 +1,10 @@
 {
   "/api/user/route": "app/api/user/route.js",
-  "/api/save-username/route": "app/api/save-username/route.js",
-  "/api/users/logout/route": "app/api/users/logout/route.js",
   "/api/users/current/route": "app/api/users/current/route.js",
-  "/(root)/page": "app/(root)/page.js",
-  "/signin/page": "app/signin/page.js",
-  "/(root)/map/page": "app/(root)/map/page.js",
+  "/api/save-username/route": "app/api/save-username/route.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/(root)/override/page": "app/(root)/override/page.js",
   "/(root)/livecam/page": "app/(root)/livecam/page.js",
-  "/(root)/reports/page": "app/(root)/reports/page.js"
+  "/(root)/reports/page": "app/(root)/reports/page.js",
+  "/(root)/page": "app/(root)/page.js"
 }

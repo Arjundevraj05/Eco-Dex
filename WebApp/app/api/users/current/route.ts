@@ -1,31 +1,27 @@
-// /app/api/user/current/route.ts
-import { NextRequest, NextResponse } from 'next/server';
-import { connectToDatabase } from '@/utils/mongodb';
-// Importing cookie/session library (for example, if you're using next-auth or a similar library)
-// You can use Redis if you set up session storage with Redis
+import { NextRequest, NextResponse } from "next/server";
+import { DEMO_WASTE_RECORDS } from "@/helper/demoData";
+import { getAuthFromRequestOrDemo } from "@/helper/getAuthFromRequest";
+import { isDemoMode } from "@/helper/demoMode";
+import { connectToDatabase } from "@/utils/mongodb";
 
 export async function GET(request: NextRequest) {
-    try {
-        // Assuming you have stored the username in a cookie or session
-        const cookie = request.cookies.get('username'); // Fetch username from cookie
-
-        if (!cookie) {
-            return NextResponse.json({ error: 'Username not found' }, { status: 401 });
-        }
-
-        const username = cookie.value; // Extract username value from the cookie
-
-        // Connect to MongoDB and retrieve documents
-        const { db } = await connectToDatabase();
-        const collectionName = `${username}_waste_records`;
-        console.log("Collection name:", collectionName); // Debugging line
-
-        const collection = db.collection(collectionName);
-        const documents = await collection.find({}).toArray();
-        
-        return NextResponse.json(documents);
-    } catch (error) {
-        console.error('Error fetching records:', error);
-        return NextResponse.json({ error: 'Failed to fetch records' }, { status: 500 });
+  try {
+    const auth = getAuthFromRequestOrDemo(request);
+    if (!auth) {
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
+
+    if (isDemoMode()) {
+      return NextResponse.json(DEMO_WASTE_RECORDS);
+    }
+
+    const { db } = await connectToDatabase();
+    const collection = db.collection(`${auth.username}_waste_records`);
+    const documents = await collection.find({}).toArray();
+
+    return NextResponse.json(documents);
+  } catch (error) {
+    console.error("Error fetching records:", error);
+    return NextResponse.json({ error: "Failed to fetch records" }, { status: 500 });
+  }
 }

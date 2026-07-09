@@ -14,11 +14,12 @@ const Status1 = () => {
   const [totalWasteCount, setTotalWasteCount] = useState(0);
   const [tokensEarned, setTokensEarned] = useState(0);
   const [carbonReduced, setCarbonReduced] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const response = await fetch("/api/users/current");
+        const response = await fetch("/api/users/current", { credentials: "include" });
         if (!response.ok) {
           throw new Error("Failed to fetch records");
         }
@@ -47,11 +48,21 @@ const Status1 = () => {
         );
       } catch (err) {
         console.error("Error fetching data:", err);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchReports();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="mb-6 mt-10 flex justify-center">
+        <p className="text-gray-500">Loading impact stats...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="mb-6 mt-10 flex justify-center flex-row gap-3 flex-wrap">
