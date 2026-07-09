@@ -1,6 +1,15 @@
 "use client"
-import MapComponent from '@/components/MapComponent';
+import dynamic from 'next/dynamic';
 import React, { useEffect, useState } from 'react';
+
+const MapComponent = dynamic(() => import('@/components/MapComponent'), {
+  ssr: false,
+  loading: () => (
+    <div className="flex h-full w-full items-center justify-center rounded-lg bg-gray-100 text-sm text-gray-500">
+      Loading map...
+    </div>
+  ),
+});
 
 interface WasteRecord {
   Latitude: number;
