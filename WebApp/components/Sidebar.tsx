@@ -28,12 +28,10 @@ const navigation = [
 
 const Sidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [loaded, setLoaded] = useState(false);
   const [username, setUsername] = useState<string | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
-    setLoaded(true);
     const getUsername = async () => {
       const fetchedUsername = await fetchUsername();
       setUsername(fetchedUsername);
@@ -41,29 +39,47 @@ const Sidebar: React.FC = () => {
     getUsername();
   }, []);
 
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
   const isActive = (href: string) =>
     href === '/' ? pathname === '/' : pathname.startsWith(href);
 
   return (
     <>
-      <div className="md:hidden flex items-center justify-between w-full bg-gray-50 text-black px-4 py-3 shadow-md">
-        <button onClick={() => setIsOpen(!isOpen)} aria-label="Toggle Sidebar" className="focus:outline-none">
+      <div className="fixed top-0 left-0 right-0 z-[1120] flex h-14 items-center justify-between bg-gray-50 px-4 shadow-md md:hidden">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Toggle Sidebar"
+          className="focus:outline-none"
+        >
           {isOpen ? <XIcon className="h-6 w-6" /> : <MenuAlt2Icon className="h-6 w-6" />}
         </button>
         <div className="flex items-center">
           <Image src="/icons/logo_main.svg" width={34} height={34} alt="logo" />
-          <span className="ml-2 font-bold font-stacker text-xl">Eco-Dex</span>
+          <span className="ml-2 font-bold font-stacker text-lg sm:text-xl">Eco-Dex</span>
         </div>
         <div className="w-6" />
       </div>
 
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-[1100] bg-black/50 md:hidden"
+          onClick={() => setIsOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       <aside
-        className={`fixed inset-y-0 left-0 transform transition-transform duration-500 ease-in-out ${
-          loaded ? 'translate-x-0' : '-translate-x-full'
-        } ${isOpen ? 'md:translate-x-0' : '-translate-x-full'} md:translate-x-0 bg-gray-50 text-black w-52 z-50 border-r-2 shadow-lg`}
+        className={`fixed left-0 z-[1110] w-52 bg-gray-50 text-black border-r-2 shadow-lg
+          top-14 bottom-0 md:top-0
+          transition-transform duration-300 ease-in-out
+          ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+          md:translate-x-0`}
       >
-        <div className="flex flex-col h-full p-6 border-b-1">
-          <div className="flex items-center mb-8 border-b border-gray-300 pb-4">
+        <div className="flex h-full flex-col overflow-y-auto p-4 sm:p-6">
+          <div className="mb-6 hidden items-center border-b border-gray-300 pb-4 md:flex">
             <Image src="/icons/logo_main.svg" width={34} height={34} alt="logo" />
             <span className="ml-2 text-lg font-stacker font-bold">Eco-Dex</span>
           </div>
@@ -75,14 +91,14 @@ const Sidebar: React.FC = () => {
                   <Link
                     href={item.href}
                     onClick={() => setIsOpen(false)}
-                    className={`flex items-center w-full px-4 py-3 text-medium font-medium transition-all duration-200 rounded-md ${
+                    className={`flex items-center w-full px-3 sm:px-4 py-2.5 sm:py-3 text-medium font-medium transition-all duration-200 rounded-md ${
                       isActive(item.href)
                         ? 'bg-green-100 text-green-600 shadow-sm'
                         : 'text-gray-700 hover:bg-gray-100 hover:text-green-600'
                     }`}
                   >
                     <item.icon
-                      className={`h-6 w-6 shrink-0 ${
+                      className={`h-5 w-5 sm:h-6 sm:w-6 shrink-0 ${
                         isActive(item.href) ? 'text-green-600' : 'text-gray-500'
                       }`}
                     />
@@ -94,30 +110,22 @@ const Sidebar: React.FC = () => {
           </nav>
 
           {isDemoMode ? (
-            <div className="w-full mb-4 rounded-lg bg-green-100 text-green-800 text-center py-3 text-sm font-medium">
+            <div className="mb-4 w-full rounded-lg bg-green-100 py-3 text-center text-sm font-medium text-green-800">
               Demo Mode
             </div>
           ) : (
             <LogoutButton />
           )}
 
-          <div className="mt-8 flex items-center border-t border-grey-300 pt-4 space-x-4">
-            <UserCircleIcon className="h-10 w-10 text-gray-500" />
-            <div>
-              <p className="text-sm font-medium">{username ? username : 'Guest'}</p>
+          <div className="mt-6 flex items-center border-t border-gray-300 pt-4 space-x-3 sm:space-x-4">
+            <UserCircleIcon className="h-9 w-9 sm:h-10 sm:w-10 text-gray-500 shrink-0" />
+            <div className="min-w-0">
+              <p className="truncate text-sm font-medium">{username ? username : 'Guest'}</p>
               <p className="text-xs text-gray-500">Operator</p>
             </div>
           </div>
         </div>
       </aside>
-
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black opacity-50 z-40 md:hidden"
-          onClick={() => setIsOpen(false)}
-          aria-hidden="true"
-        />
-      )}
     </>
   );
 };

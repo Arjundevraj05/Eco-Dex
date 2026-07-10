@@ -29,13 +29,15 @@ const HeaderBox: React.FC  = () => {
         fetchUsername();
     }, []);
   return (
-    <div className=" py-6 ml-56 flex flex-col w-4/5 justify-start gap-1 md:flex-row items-center border-b pb-5">
+    <div className="w-full border-b px-4 py-4 sm:px-6 sm:py-6">
       <div>
-        <h1 className='text-24 lg:text-30 font-poppins font-semibold text-gray-800'>
+        <h1 className="text-xl font-poppins font-semibold text-gray-800 sm:text-2xl lg:text-3xl">
           Welcome Back,  
-          <span className='bg-gradient-to-r from-green-400 to-green-600 text-transparent bg-clip-text font-poppins'>&nbsp;{username ? `Welcome, ${username}!` : 'Welcome, Guest!'}</span>!
+          <span className="bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent font-poppins">
+            {username ? ` ${username}` : ' Guest'}
+          </span>!
         </h1>
-        <p className="text-14 lg:text-16 font-normal text-gray-600">
+        <p className="mt-2 text-sm font-normal text-gray-600 sm:text-base">
           Ready to make a difference? Let’s clean up the world together.
         </p>
       </div>

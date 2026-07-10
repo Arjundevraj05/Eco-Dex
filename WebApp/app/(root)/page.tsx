@@ -1,4 +1,4 @@
-"use client"; // This ensures that the page is treated as a Client Component
+"use client";
 
 import { Leaf, Coins, Users } from 'lucide-react';
 import HeaderBox from "@/components/HeaderBox";
@@ -7,31 +7,30 @@ import React from "react";
 
 function AnimatedGlobe() {
   return (
-    <div className="mt-10 relative w-32 h-32 mx-auto mb-8">
-      <div className="absolute inset-0 rounded-full bg-green-500 opacity-20 animate-pulse"></div>
-      <div className="absolute inset-2 rounded-full bg-green-400 opacity-40 animate-ping"></div>
-      <div className="absolute inset-4 rounded-full bg-green-300 opacity-60 animate-spin"></div>
-      <div className="absolute inset-6 rounded-full bg-green-200 opacity-80 animate-bounce"></div>
-      <Leaf className="absolute inset-0 m-auto h-16 w-16 text-green-600 animate-pulse" />
+    <div className="relative mx-auto mb-6 mt-4 h-24 w-24 sm:mb-8 sm:mt-6 sm:h-32 sm:w-32">
+      <div className="absolute inset-0 rounded-full bg-green-500 opacity-20 animate-pulse" />
+      <div className="absolute inset-2 rounded-full bg-green-400 opacity-40 animate-ping" />
+      <div className="absolute inset-4 rounded-full bg-green-300 opacity-60 animate-spin" />
+      <div className="absolute inset-6 rounded-full bg-green-200 opacity-80 animate-bounce" />
+      <Leaf className="absolute inset-0 m-auto h-12 w-12 text-green-600 animate-pulse sm:h-16 sm:w-16" />
     </div>
   );
 }
 
 const Page: React.FC = () => {
   return (
-    <div className="flex flex-col items-center min-h-screen bg-green-50 font-sans">
+    <div className="flex min-h-screen w-full flex-col items-center bg-green-50 font-sans">
       <HeaderBox />
-      <div className="text-center mb-20">
-        <div className="ml-36">
-          <AnimatedGlobe />
-          <h1 className="text-6xl font-bold mb-6 text-gray-800 tracking-tight">
-            Revolutionize <br /><span className="text-green-600">Waste Management</span>
-          </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed mb-8">
-            With Eco-Dex and RAG-ED, experience a smarter, greener approach to waste collection!
-          </p>
-        </div>
-        <div className="ml-40 grid grid-cols-1 md:grid-cols-3 gap-10 mb-12 max-w-4xl mx-auto">
+      <div className="mb-12 w-full max-w-4xl px-4 pb-12 text-center sm:px-6 md:mb-20">
+        <AnimatedGlobe />
+        <h1 className="mb-4 text-3xl font-bold tracking-tight text-gray-800 sm:mb-6 sm:text-4xl md:text-5xl lg:text-6xl">
+          Revolutionize <br /><span className="text-green-600">Waste Management</span>
+        </h1>
+        <p className="mx-auto mb-8 max-w-2xl text-base leading-relaxed text-gray-600 sm:text-lg md:text-xl">
+          With Eco-Dex and RAG-ED, experience a smarter, greener approach to waste collection!
+        </p>
+
+        <div className="mb-10 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 md:gap-8">
           <FeatureCard
             icon={Leaf}
             title="Eco-Friendly"
@@ -48,8 +47,11 @@ const Page: React.FC = () => {
             description="Be part of a growing community committed to sustainable practices."
           />
         </div>
-        <section className="ml-40 bg-white p-10 rounded-3xl shadow-lg mb-16 max-w-4xl mx-auto">
-          <h2 className="text-4xl font-bold mb-12 text-center text-gray-800">Our Impact</h2>
+
+        <section className="mx-auto w-full max-w-4xl overflow-hidden rounded-2xl bg-white p-6 shadow-lg sm:rounded-3xl sm:p-8 md:p-10 lg:max-w-6xl">
+          <h2 className="mb-8 text-center text-2xl font-bold text-gray-800 sm:mb-10 sm:text-3xl md:text-4xl">
+            Our Impact
+          </h2>
           <Status1 />
         </section>
       </div>
@@ -65,12 +67,12 @@ interface FeatureCardProps {
 
 const FeatureCard: React.FC<FeatureCardProps> = ({ icon: Icon, title, description }) => {
   return (
-    <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 ease-in-out flex flex-col items-center text-center">
-      <div className="bg-green-100 p-4 rounded-full mb-6">
-        <Icon className="h-10 w-10 text-green-600 transform translate-x-1" />
+    <div className="flex flex-col items-center rounded-xl bg-white p-6 text-center shadow-md transition-all duration-300 ease-in-out hover:shadow-lg sm:p-8">
+      <div className="mb-4 rounded-full bg-green-100 p-3 sm:mb-6 sm:p-4">
+        <Icon className="h-8 w-8 text-green-600 sm:h-10 sm:w-10" />
       </div>
-      <h3 className="text-xl font-semibold mb-4 text-gray-800 transform translate-x-1">{title}</h3>
-      <p className="text-gray-600 leading-relaxed">{description}</p>
+      <h3 className="mb-3 text-lg font-semibold text-gray-800 sm:mb-4 sm:text-xl">{title}</h3>
+      <p className="text-sm leading-relaxed text-gray-600 sm:text-base">{description}</p>
     </div>
   );
 };

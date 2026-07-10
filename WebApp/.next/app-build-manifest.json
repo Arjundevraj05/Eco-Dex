@@ -39,7 +39,6 @@
     "/(root)/map/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/(root)/map/page.css",
       "static/chunks/app/(root)/map/page.js"
     ],
     "/(root)/livecam/page": [

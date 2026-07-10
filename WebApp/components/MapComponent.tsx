@@ -94,7 +94,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ locations }) => {
     };
   }, [locations, ready]);
 
-  return <div ref={containerRef} className="h-full w-full rounded-lg" />;
+  return <div ref={containerRef} className="leaflet-contained h-full w-full rounded-lg" />;
 };
 
 export default MapComponent;

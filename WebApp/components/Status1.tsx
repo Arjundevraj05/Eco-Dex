@@ -9,6 +9,45 @@ interface WasteItem {
   Class: "PLASTIC" | "METAL" | "PAPER" | "CARDBOARD" | "GLASS";
 }
 
+function ImpactCard({
+  gradient,
+  iconBg,
+  icon,
+  title,
+  value,
+  suffix,
+  titleColor,
+  valueColor,
+}: {
+  gradient: string;
+  iconBg: string;
+  icon: React.ReactNode;
+  title: string;
+  value: number;
+  suffix?: string;
+  titleColor: string;
+  valueColor: string;
+}) {
+  return (
+    <div
+      className={`flex h-36 w-full max-w-sm cursor-pointer flex-row items-center rounded-lg bg-gradient-to-b ${gradient} p-[2px] transition-transform duration-200 hover:scale-105 sm:w-72 sm:max-w-none`}
+    >
+      <div className="flex h-full w-full items-center rounded-lg bg-gray-50 p-4 sm:p-5">
+        <div className={`shrink-0 rounded-full bg-gradient-to-b p-2.5 sm:p-3 ${iconBg}`}>
+          {icon}
+        </div>
+        <div className="ml-3 min-w-0 flex-1 sm:ml-4">
+          <p className={`text-base font-semibold leading-tight sm:text-xl ${titleColor}`}>{title}</p>
+          <p className={`mt-1 text-2xl font-bold sm:mt-2 sm:text-3xl ${valueColor}`}>
+            <CountUp end={value} duration={2.5} />
+            {suffix && <span className="text-lg sm:text-xl"> {suffix}</span>}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const Status1 = () => {
   const [biodegradableCount, setBiodegradableCount] = useState(0);
   const [totalWasteCount, setTotalWasteCount] = useState(0);
@@ -38,7 +77,6 @@ const Status1 = () => {
           { PLASTIC: 0, METAL: 0, PAPER: 0, CARDBOARD: 0, GLASS: 0 }
         );
 
-        // Calculate Tokens Earned & Carbon Emissions Reduced
         setTokensEarned(
           counts.PLASTIC * 2 + counts.METAL * 3 + counts.PAPER * 1 + counts.CARDBOARD * 2 + counts.GLASS * 2
         );
@@ -65,66 +103,44 @@ const Status1 = () => {
   }
 
   return (
-    <div className="mb-6 mt-10 flex justify-center flex-row gap-3 flex-wrap">
-      {/* Biodegradable Section */}
-      <div className="cursor-pointer flex flex-row items-center bg-gradient-to-b from-green-300 to-green-500 rounded-lg p-[2px] hover:scale-105 transition-transform duration-200 w-72 h-36">
-        <div className="flex items-center bg-gray-50 rounded-lg p-5 w-full h-full">
-          <div className="rounded-full p-3 bg-gradient-to-b from-green-100 to-green-200 flex-shrink-0">
-            <Image src="/icons/biodegradable.svg" width={50} height={50} alt="Biodegradable Icon" />
-          </div>
-          <div className="ml-4 flex-grow">
-            <p className="font-semibold text-xl text-green-800">Biodegradable</p>
-            <p className="font-bold text-3xl mt-2 text-green-900">
-              <CountUp end={biodegradableCount} duration={2.5} />
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Non-Biodegradable Section */}
-      <div className="cursor-pointer flex flex-row items-center bg-gradient-to-b from-red-300 to-red-500 rounded-lg p-[2px] hover:scale-105 transition-transform duration-200 w-72 h-36">
-        <div className="flex items-center bg-gray-50 rounded-lg p-5 w-full h-full">
-          <div className="rounded-full p-3 bg-gradient-to-b from-red-100 to-red-200 flex-shrink-0">
-            <Image src="/icons/nonbiodegradable.svg" width={50} height={50} alt="Non-Biodegradable Icon" />
-          </div>
-          <div className="ml-4 flex-grow">
-            <p className="font-semibold text-xl text-red-800">Non-Biodegradable</p>
-            <p className="font-bold text-3xl mt-2 text-red-900">
-              <CountUp end={totalWasteCount - biodegradableCount} duration={2.5} />
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Carbon Emissions Reduced Section */}
-      <div className="cursor-pointer flex flex-row items-center bg-gradient-to-b from-gray-300 to-gray-500 rounded-lg p-[2px] hover:scale-105 transition-transform duration-200 w-72 h-36">
-        <div className="flex items-center bg-gray-50 rounded-lg p-5 w-full h-full">
-          <div className="rounded-full p-3 bg-gradient-to-b from-gray-100 to-gray-200 flex-shrink-0">
-            <Leaf className="h-12 w-12 text-gray-700" />
-          </div>
-          <div className="ml-4 flex-grow">
-            <p className="font-semibold text-xl text-gray-700">Carbon Reduced</p>
-            <p className="font-bold text-3xl mt-2 text-gray-800">
-              <CountUp end={carbonReduced} duration={2.5} /> kg
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Tokens Earned Section */}
-      <div className="cursor-pointer flex flex-row items-center bg-gradient-to-b from-yellow-300 to-yellow-500 rounded-lg p-[2px] hover:scale-105 transition-transform duration-200 w-72 h-36">
-        <div className="flex items-center bg-gray-50 rounded-lg p-5 w-full h-full">
-          <div className="rounded-full p-3 bg-gradient-to-b from-yellow-100 to-yellow-200 flex-shrink-0">
-            <Coins className="h-12 w-12 text-yellow-600" />
-          </div>
-          <div className="ml-4 flex-grow">
-            <p className="font-semibold text-xl text-yellow-800">Tokens Earned</p>
-            <p className="font-bold text-3xl mt-2 text-yellow-900">
-              <CountUp end={tokensEarned} duration={2.5} />
-            </p>
-          </div>
-        </div>
-      </div>
+    <div className="mb-6 mt-6 flex flex-wrap justify-center gap-3 sm:mt-10 sm:gap-4">
+      <ImpactCard
+        gradient="from-green-300 to-green-500"
+        iconBg="from-green-100 to-green-200"
+        icon={<Image src="/icons/biodegradable.svg" width={50} height={50} alt="Biodegradable" />}
+        title="Biodegradable"
+        value={biodegradableCount}
+        titleColor="text-green-800"
+        valueColor="text-green-900"
+      />
+      <ImpactCard
+        gradient="from-red-300 to-red-500"
+        iconBg="from-red-100 to-red-200"
+        icon={<Image src="/icons/nonbiodegradable.svg" width={50} height={50} alt="Non-Biodegradable" />}
+        title="Non-Biodegradable"
+        value={totalWasteCount - biodegradableCount}
+        titleColor="text-red-800"
+        valueColor="text-red-900"
+      />
+      <ImpactCard
+        gradient="from-gray-300 to-gray-500"
+        iconBg="from-gray-100 to-gray-200"
+        icon={<Leaf className="h-10 w-10 text-gray-700 sm:h-12 sm:w-12" />}
+        title="Carbon Reduced"
+        value={carbonReduced}
+        suffix="kg"
+        titleColor="text-gray-700"
+        valueColor="text-gray-800"
+      />
+      <ImpactCard
+        gradient="from-yellow-300 to-yellow-500"
+        iconBg="from-yellow-100 to-yellow-200"
+        icon={<Coins className="h-10 w-10 text-yellow-600 sm:h-12 sm:w-12" />}
+        title="Tokens Earned"
+        value={tokensEarned}
+        titleColor="text-yellow-800"
+        valueColor="text-yellow-900"
+      />
     </div>
   );
 };

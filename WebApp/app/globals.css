@@ -123,7 +123,7 @@ body {
 }
 
 .formWrapper {
-  @apply flex shadow-2xl items-center border bg-primary rounded-lg overflow-hidden justify-center w-[20rem] mx-6 md:w-auto my-4;
+  @apply flex shadow-2xl items-center border bg-primary rounded-lg overflow-hidden justify-center w-full max-w-[20rem] mx-4 sm:mx-6 md:w-auto my-4;
   background-color: #3B5249;
   padding: 20px;
   border-radius: 10px;
@@ -146,7 +146,7 @@ body {
 }
 
 .signInWrapper .right, .signUpWrapper .right {
-  @apply px-4 py-4 my-4 mx-4 md:w-1/2 w-[20rem] bg-white rounded-lg;
+  @apply px-4 py-4 my-4 mx-2 w-full max-w-[20rem] bg-white rounded-lg sm:mx-4 md:w-1/2 md:max-w-none;
 }
 
 /* Social Signup/Signin Buttons */
@@ -176,4 +176,41 @@ video {
   max-width: 100%;
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Keep Leaflet layers inside the map card so they don't cover mobile nav */
+.leaflet-contained {
+  position: relative;
+  isolation: isolate;
+  z-index: 0;
+}
+
+.leaflet-contained .leaflet-tile-pane {
+  z-index: 1 !important;
+}
+
+.leaflet-contained .leaflet-overlay-pane {
+  z-index: 2 !important;
+}
+
+.leaflet-contained .leaflet-shadow-pane {
+  z-index: 3 !important;
+}
+
+.leaflet-contained .leaflet-marker-pane {
+  z-index: 4 !important;
+}
+
+.leaflet-contained .leaflet-tooltip-pane {
+  z-index: 5 !important;
+}
+
+.leaflet-contained .leaflet-popup-pane {
+  z-index: 6 !important;
+}
+
+.leaflet-contained .leaflet-top,
+.leaflet-contained .leaflet-bottom,
+.leaflet-contained .leaflet-control {
+  z-index: 7 !important;
 }

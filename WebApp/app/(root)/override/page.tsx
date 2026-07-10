@@ -7,15 +7,15 @@ const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
 
 export default function SecurityOverridePage() {
   return (
-    <div className="ml-40 min-h-screen bg-green-50 py-8 px-6">
-      <div className="max-w-3xl mx-auto">
-        <div className="mb-8 rounded-2xl bg-gradient-to-r from-slate-800 to-slate-700 p-6 text-white shadow-lg">
-          <div className="flex items-center gap-3 mb-1">
-            <Shield className="h-7 w-7 text-green-400" />
-            <span className="text-sm font-medium uppercase tracking-wider opacity-80">Safety System</span>
+    <div className="min-h-screen bg-green-50 px-4 py-6 sm:px-6 sm:py-8">
+      <div className="mx-auto max-w-3xl">
+        <div className="mb-6 rounded-2xl bg-gradient-to-r from-slate-800 to-slate-700 p-5 text-white shadow-lg sm:mb-8 sm:p-6">
+          <div className="mb-1 flex items-center gap-3">
+            <Shield className="h-6 w-6 text-green-400 sm:h-7 sm:w-7" />
+            <span className="text-xs font-medium uppercase tracking-wider opacity-80 sm:text-sm">Safety System</span>
           </div>
-          <h1 className="text-3xl font-bold">Security Override</h1>
-          <p className="mt-1 text-slate-300 text-sm">
+          <h1 className="text-2xl font-bold sm:text-3xl">Security Override</h1>
+          <p className="mt-1 text-sm text-slate-300">
             Emergency lock, unlock, and alert controls for the RAG-ED security subsystem
           </p>
         </div>
@@ -77,18 +77,18 @@ function EnhancedOverrideControl() {
   const cfg = statusConfig[status] || statusConfig.IDLE;
 
   return (
-    <div className="bg-white rounded-2xl shadow-md p-8 border border-gray-100">
-      <div className="text-center mb-8">
-        <div className={`inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-bold ${cfg.bg} ${cfg.text}`}>
-          <span className={`w-2.5 h-2.5 rounded-full ${cfg.dot} animate-pulse`} />
+    <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-md sm:p-8">
+      <div className="mb-6 text-center sm:mb-8">
+        <div className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold sm:px-5 ${cfg.bg} ${cfg.text}`}>
+          <span className={`h-2.5 w-2.5 animate-pulse rounded-full ${cfg.dot}`} />
           {status}
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <button
           onClick={() => sendCommand('LOCK')}
-          className="group flex flex-col items-center gap-3 p-6 rounded-2xl bg-red-50 border-2 border-red-100 hover:border-red-300 hover:bg-red-100 transition-all"
+          className="group flex flex-col items-center gap-3 rounded-2xl border-2 border-red-100 bg-red-50 p-5 transition-all hover:border-red-300 hover:bg-red-100 sm:p-6"
         >
           <div className="p-3 rounded-xl bg-red-500 text-white group-hover:scale-110 transition-transform">
             <Lock className="h-7 w-7" />
@@ -99,7 +99,7 @@ function EnhancedOverrideControl() {
 
         <button
           onClick={() => sendCommand('UNLOCK')}
-          className="group flex flex-col items-center gap-3 p-6 rounded-2xl bg-green-50 border-2 border-green-100 hover:border-green-300 hover:bg-green-100 transition-all"
+          className="group flex flex-col items-center gap-3 rounded-2xl border-2 border-green-100 bg-green-50 p-5 transition-all hover:border-green-300 hover:bg-green-100 sm:p-6"
         >
           <div className="p-3 rounded-xl bg-green-500 text-white group-hover:scale-110 transition-transform">
             <Unlock className="h-7 w-7" />
@@ -110,7 +110,7 @@ function EnhancedOverrideControl() {
 
         <button
           onClick={() => sendCommand('ALERT')}
-          className="group flex flex-col items-center gap-3 p-6 rounded-2xl bg-yellow-50 border-2 border-yellow-100 hover:border-yellow-300 hover:bg-yellow-100 transition-all"
+          className="group flex flex-col items-center gap-3 rounded-2xl border-2 border-yellow-100 bg-yellow-50 p-5 transition-all hover:border-yellow-300 hover:bg-yellow-100 sm:p-6"
         >
           <div className="p-3 rounded-xl bg-yellow-500 text-white group-hover:scale-110 transition-transform">
             <Bell className="h-7 w-7" />

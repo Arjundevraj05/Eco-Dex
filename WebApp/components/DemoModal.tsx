@@ -38,7 +38,7 @@ export default function DemoModal() {
         role="dialog"
         aria-modal="true"
         aria-labelledby="demo-modal-title"
-        className="relative w-full max-w-lg rounded-2xl bg-white shadow-2xl overflow-hidden"
+        className="relative flex max-h-[90vh] w-full max-w-lg flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
       >
         <div className="bg-gradient-to-r from-green-600 to-green-700 px-6 py-5 text-white">
           <div className="flex items-start justify-between gap-4">
@@ -65,7 +65,7 @@ export default function DemoModal() {
           </div>
         </div>
 
-        <div className="px-6 py-6 space-y-4 text-gray-700">
+        <div className="space-y-4 overflow-y-auto px-6 py-6 text-gray-700">
           <p className="leading-relaxed">
             You are viewing an <strong>interactive demo</strong> of the Eco-Dex dashboard.
             The RAG-ED robots are <strong>not live</strong> right now — all waste collection

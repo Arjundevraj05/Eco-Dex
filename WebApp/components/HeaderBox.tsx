@@ -38,17 +38,17 @@ const HeaderBox: React.FC = () => {
   };
 
   return (
-    <div className="py-6 ml-56 flex flex-col w-4/5 justify-start gap-1 md:flex-row items-center border-b pb-5">
+    <div className="w-full border-b px-4 py-4 sm:px-6 sm:py-6">
       <motion.div
         initial="hidden"
         animate="visible"
         variants={textVariants}
-        className="header-box"
+        className="w-full"
       >
-        <h1 className="text-24 lg:text-30 font-poppins font-semibold text-gray-800">
+        <h1 className="text-xl font-poppins font-semibold text-gray-800 sm:text-2xl lg:text-3xl">
           Welcome Back,{' '}
-          <span className="bg-gradient-to-r from-green-400 to-green-600 text-transparent bg-clip-text font-poppins">
-            &nbsp;{username ? `${username}` : 'Guest'}
+          <span className="bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent font-poppins">
+            {username ? `${username}` : 'Guest'}
           </span>
           !
         </h1>
@@ -56,7 +56,7 @@ const HeaderBox: React.FC = () => {
           initial="hidden"
           animate="visible"
           variants={subTextVariants}
-          className="text-14 lg:text-16 font-normal text-gray-600 mt-2"
+          className="mt-2 text-sm font-normal text-gray-600 sm:text-base"
         >
           Ready to make a difference? Let’s clean up the world together.
         </motion.p>

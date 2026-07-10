@@ -83,9 +83,9 @@ const ReportsPage = () => {
 
   if (loading) {
     return (
-      <div className="ml-40 min-h-screen bg-green-50 flex items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center bg-green-50 px-4">
         <div className="flex flex-col items-center gap-3">
-          <div className="h-10 w-10 rounded-full border-4 border-green-200 border-t-green-600 animate-spin" />
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-green-200 border-t-green-600" />
           <p className="text-gray-500">Loading analysis...</p>
         </div>
       </div>
@@ -94,8 +94,8 @@ const ReportsPage = () => {
 
   if (error) {
     return (
-      <div className="ml-40 min-h-screen bg-green-50 flex items-center justify-center">
-        <p className="text-red-500">Error: {error}</p>
+      <div className="flex min-h-screen items-center justify-center bg-green-50 px-4">
+        <p className="text-center text-red-500">Error: {error}</p>
       </div>
     );
   }
@@ -154,16 +154,16 @@ const ReportsPage = () => {
   };
 
   return (
-    <div className="ml-40 min-h-screen bg-green-50 py-8 px-6">
-      <div className="max-w-5xl mx-auto">
+    <div className="min-h-screen bg-green-50 px-4 py-6 sm:px-6 sm:py-8">
+      <div className="mx-auto max-w-5xl">
         {/* Header */}
-        <div className="mb-8 rounded-2xl bg-gradient-to-r from-green-600 to-emerald-500 p-6 text-white shadow-lg">
-          <div className="flex items-center gap-3 mb-2">
-            <BarChart3 className="h-7 w-7" />
-            <span className="text-sm font-medium uppercase tracking-wider opacity-90">RAG-ED Analytics</span>
+        <div className="mb-6 rounded-2xl bg-gradient-to-r from-green-600 to-emerald-500 p-5 text-white shadow-lg sm:mb-8 sm:p-6">
+          <div className="mb-2 flex items-center gap-3">
+            <BarChart3 className="h-6 w-6 sm:h-7 sm:w-7" />
+            <span className="text-xs font-medium uppercase tracking-wider opacity-90 sm:text-sm">RAG-ED Analytics</span>
           </div>
-          <h1 className="text-3xl font-bold">Performance Analysis</h1>
-          <p className="mt-1 text-green-100 text-sm">
+          <h1 className="text-2xl font-bold sm:text-3xl">Performance Analysis</h1>
+          <p className="mt-1 text-sm text-green-100">
             Waste collection breakdown, trends, and environmental impact metrics
           </p>
         </div>
@@ -243,7 +243,7 @@ const ReportsPage = () => {
             <div className="h-48">
               <Bar data={barData} options={{ ...chartOptions, maintainAspectRatio: false }} />
             </div>
-            <div className="flex justify-center gap-6 mt-2 text-sm">
+            <div className="flex flex-wrap justify-center gap-4 mt-2 text-sm sm:gap-6">
               <span className="flex items-center gap-1.5">
                 <span className="w-3 h-3 rounded-full bg-green-500" />
                 Bio ({biodegradableCount})
@@ -269,12 +269,12 @@ function SummaryCard({
   accent: string;
 }) {
   return (
-    <div className={`bg-white rounded-2xl shadow-md p-5 border-l-4 ${accent} hover:shadow-lg transition-shadow`}>
-      <div className="flex items-center gap-3 mb-3">
-        <div className="p-2 bg-green-50 rounded-lg">{icon}</div>
-        <p className="text-sm text-gray-500 font-medium">{label}</p>
+    <div className={`rounded-2xl border-l-4 bg-white p-4 shadow-md transition-shadow hover:shadow-lg sm:p-5 ${accent}`}>
+      <div className="mb-3 flex items-center gap-3">
+        <div className="rounded-lg bg-green-50 p-2">{icon}</div>
+        <p className="text-sm font-medium text-gray-500">{label}</p>
       </div>
-      <p className="text-4xl font-bold text-gray-800">
+      <p className="text-3xl font-bold text-gray-800 sm:text-4xl">
         <CountUp end={value} duration={2} />
       </p>
     </div>

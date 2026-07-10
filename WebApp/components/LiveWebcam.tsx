@@ -55,16 +55,16 @@ const LiveWebcam: React.FC = () => {
     }`;
 
   return (
-    <div className="ml-40 min-h-screen bg-green-50 py-8 px-6">
-      <div className="max-w-5xl mx-auto">
+    <div className="min-h-screen bg-green-50 px-4 py-6 sm:px-6 sm:py-8">
+      <div className="mx-auto max-w-5xl">
         {/* Header */}
-        <div className="mb-6 rounded-2xl bg-gradient-to-r from-green-700 to-emerald-600 p-6 text-white shadow-lg">
-          <div className="flex items-center gap-3 mb-1">
-            <SlidersHorizontal className="h-7 w-7" />
-            <span className="text-sm font-medium uppercase tracking-wider opacity-90">Robot Control</span>
+        <div className="mb-6 rounded-2xl bg-gradient-to-r from-green-700 to-emerald-600 p-5 text-white shadow-lg sm:p-6">
+          <div className="mb-1 flex items-center gap-3">
+            <SlidersHorizontal className="h-6 w-6 sm:h-7 sm:w-7" />
+            <span className="text-xs font-medium uppercase tracking-wider opacity-90 sm:text-sm">Robot Control</span>
           </div>
-          <h1 className="text-3xl font-bold">Manual Override</h1>
-          <p className="mt-1 text-green-100 text-sm">
+          <h1 className="text-2xl font-bold sm:text-3xl">Manual Override</h1>
+          <p className="mt-1 text-sm text-green-100">
             Take direct control of RAG-ED movement — use WASD keys or the control pad below
           </p>
         </div>
@@ -72,7 +72,7 @@ const LiveWebcam: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Feed */}
           <div className="lg:col-span-2 bg-white rounded-2xl shadow-md overflow-hidden border border-green-100">
-            <div className="relative h-80 bg-slate-900">
+            <div className="relative h-56 bg-slate-900 sm:h-72 md:h-80">
               <div
                 className="absolute inset-0 opacity-20"
                 style={{
@@ -137,7 +137,7 @@ const LiveWebcam: React.FC = () => {
         </div>
 
         {/* D-pad */}
-        <div className="mt-6 bg-white rounded-2xl shadow-md p-8 border border-green-100">
+        <div className="mt-6 rounded-2xl border border-green-100 bg-white p-5 shadow-md sm:p-8">
           <h2 className="text-center text-lg font-semibold text-gray-800 mb-1">Drive Controls</h2>
           <p className="text-center text-sm text-gray-400 mb-6">WASD keyboard or click the pad</p>
           <div className="flex flex-col items-center gap-2">

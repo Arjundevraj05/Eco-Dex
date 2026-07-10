@@ -45,14 +45,14 @@ const Page = () => {
   }, []);
 
   return (
-    <div className='flex flex-col items-center min-h-screen bg-green-50 font-sans p-6'>
-      <div className="ml-40 w-full max-w-4xl bg-white shadow-xl rounded-lg p-6">
-        <div className="mb-7 text-center">
-          <h2 className="text-4xl font-bold text-gray-800 tracking-wide">
+    <div className="flex min-h-screen flex-col items-center bg-green-50 p-4 font-sans sm:p-6">
+      <div className="w-full max-w-4xl rounded-lg bg-white p-4 shadow-xl sm:p-6">
+        <div className="mb-5 text-center sm:mb-7">
+          <h2 className="text-2xl font-bold tracking-wide text-gray-800 sm:text-3xl md:text-4xl">
             <span className="font-stacker font-bold">RAG-ED Location</span>
           </h2>
         </div>
-        <div className="h-[70vh] overflow-hidden">
+        <div className="relative z-0 isolate h-[50vh] overflow-hidden rounded-lg sm:h-[60vh] md:h-[70vh]">
           <MapComponent locations={locations} />
         </div>
       </div>

@@ -8,14 +8,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
-    <main className="flex flex-col">
+    <main className="flex min-h-screen flex-col overflow-x-hidden">
       <DemoModal />
       <Sidebar />
-      <RightSidebar/>
+      <RightSidebar />
       <PageTransition>
-        <div className="flex-1">{children}</div>
+        <div className="flex-1 w-full min-w-0 pt-14 md:pt-0 md:pl-52 md:pr-14">
+          {children}
+        </div>
       </PageTransition>
     </main>
   );
