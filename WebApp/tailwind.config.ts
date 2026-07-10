@@ -58,6 +58,30 @@ const config: Config = {
           '5': 'hsl(var(--chart-5))',
         },
       },
+      keyframes: {
+        'fade-in-up': {
+          '0%': { opacity: '0', transform: 'translateY(16px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'fade-in': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        'soft-pulse': {
+          '0%, 100%': { opacity: '0.6' },
+          '50%': { opacity: '1' },
+        },
+        'float': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-6px)' },
+        },
+      },
+      animation: {
+        'fade-in-up': 'fade-in-up 0.5s ease-out both',
+        'fade-in': 'fade-in 0.4s ease-out both',
+        'soft-pulse': 'soft-pulse 2.5s ease-in-out infinite',
+        'float': 'float 3s ease-in-out infinite',
+      },
       borderRadius: {
         ...defaultTheme.borderRadius,
         lg: 'var(--radius)',

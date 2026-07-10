@@ -1,6 +1,9 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import { FadeIn, Stagger, StaggerItem } from '@/components/AnimatedSection';
+import { tapScale } from '@/lib/motion';
 import {
   SlidersHorizontal,
   ArrowUp,
@@ -57,7 +60,7 @@ const LiveWebcam: React.FC = () => {
   return (
     <div className="min-h-screen bg-green-50 px-4 py-6 sm:px-6 sm:py-8">
       <div className="mx-auto max-w-5xl">
-        {/* Header */}
+        <FadeIn>
         <div className="mb-6 rounded-2xl bg-gradient-to-r from-green-700 to-emerald-600 p-5 text-white shadow-lg sm:p-6">
           <div className="mb-1 flex items-center gap-3">
             <SlidersHorizontal className="h-6 w-6 sm:h-7 sm:w-7" />
@@ -68,10 +71,11 @@ const LiveWebcam: React.FC = () => {
             Take direct control of RAG-ED movement — use WASD keys or the control pad below
           </p>
         </div>
+        </FadeIn>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Feed */}
-          <div className="lg:col-span-2 bg-white rounded-2xl shadow-md overflow-hidden border border-green-100">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          <FadeIn delay={0.1} className="lg:col-span-2">
+            <div className="overflow-hidden rounded-2xl border border-green-100 bg-white shadow-md">
             <div className="relative h-56 bg-slate-900 sm:h-72 md:h-80">
               <div
                 className="absolute inset-0 opacity-20"
@@ -105,11 +109,12 @@ const LiveWebcam: React.FC = () => {
                 <span>BAT: 87%</span>
               </div>
             </div>
-          </div>
+            </div>
+          </FadeIn>
 
-          {/* Telemetry */}
-          <div className="space-y-4">
-            <div className="bg-white rounded-2xl shadow-md p-5 border border-green-100">
+          <Stagger className="space-y-4">
+            <StaggerItem>
+            <div className="rounded-2xl border border-green-100 bg-white p-5 shadow-md">
               <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Status</h3>
               <div className="space-y-3">
                 <TelemetryRow icon={<Zap className="h-4 w-4 text-yellow-500" />} label="Mode" value="Manual" />
@@ -117,8 +122,10 @@ const LiveWebcam: React.FC = () => {
                 <TelemetryRow icon={<Bot className="h-4 w-4 text-blue-500" />} label="Robot" value="RAG-ED #01" />
               </div>
             </div>
+            </StaggerItem>
 
-            <div className="bg-white rounded-2xl shadow-md p-5 border border-green-100">
+            <StaggerItem>
+            <div className="rounded-2xl border border-green-100 bg-white p-5 shadow-md">
               <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Recent Commands</h3>
               {commandHistory.length === 0 ? (
                 <p className="text-sm text-gray-400 italic">No commands yet</p>
@@ -133,10 +140,11 @@ const LiveWebcam: React.FC = () => {
                 </ul>
               )}
             </div>
-          </div>
+            </StaggerItem>
+          </Stagger>
         </div>
 
-        {/* D-pad */}
+        <FadeIn delay={0.2}>
         <div className="mt-6 rounded-2xl border border-green-100 bg-white p-5 shadow-md sm:p-8">
           <h2 className="text-center text-lg font-semibold text-gray-800 mb-1">Drive Controls</h2>
           <p className="text-center text-sm text-gray-400 mb-6">WASD keyboard or click the pad</p>
@@ -145,21 +153,22 @@ const LiveWebcam: React.FC = () => {
               <ArrowUp className="h-7 w-7" />
             </button>
             <div className="flex gap-2">
-              <button onMouseDown={() => recordCommand('a')} onMouseUp={handleKeyRelease} className={btnClass('a')}>
+              <motion.button whileTap={tapScale} onMouseDown={() => recordCommand('a')} onMouseUp={handleKeyRelease} className={btnClass('a')}>
                 <ArrowLeft className="h-7 w-7" />
-              </button>
-              <div className="w-14 h-14 rounded-xl bg-gray-100 flex items-center justify-center text-gray-400 text-xs font-bold">
+              </motion.button>
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gray-100 text-xs font-bold text-gray-400">
                 BOT
               </div>
-              <button onMouseDown={() => recordCommand('d')} onMouseUp={handleKeyRelease} className={btnClass('d')}>
+              <motion.button whileTap={tapScale} onMouseDown={() => recordCommand('d')} onMouseUp={handleKeyRelease} className={btnClass('d')}>
                 <ArrowRight className="h-7 w-7" />
-              </button>
+              </motion.button>
             </div>
-            <button onMouseDown={() => recordCommand('s')} onMouseUp={handleKeyRelease} className={btnClass('s')}>
+            <motion.button whileTap={tapScale} onMouseDown={() => recordCommand('s')} onMouseUp={handleKeyRelease} className={btnClass('s')}>
               <ArrowDown className="h-7 w-7" />
-            </button>
+            </motion.button>
           </div>
         </div>
+        </FadeIn>
       </div>
     </div>
   );

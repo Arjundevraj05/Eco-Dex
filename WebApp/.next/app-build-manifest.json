@@ -31,11 +31,6 @@
       "static/chunks/main-app.js",
       "static/chunks/app/api/save-username/route.js"
     ],
-    "/(root)/reports/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(root)/reports/page.js"
-    ],
     "/(root)/map/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",

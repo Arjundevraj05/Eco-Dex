@@ -1,7 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Lock, Unlock, Bell, Shield, AlertTriangle, CheckCircle } from 'lucide-react';
+import { FadeIn, Stagger, StaggerItem } from '@/components/AnimatedSection';
+import { tapScale } from '@/lib/motion';
 
 const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
 
@@ -9,6 +12,7 @@ export default function SecurityOverridePage() {
   return (
     <div className="min-h-screen bg-green-50 px-4 py-6 sm:px-6 sm:py-8">
       <div className="mx-auto max-w-3xl">
+        <FadeIn>
         <div className="mb-6 rounded-2xl bg-gradient-to-r from-slate-800 to-slate-700 p-5 text-white shadow-lg sm:mb-8 sm:p-6">
           <div className="mb-1 flex items-center gap-3">
             <Shield className="h-6 w-6 text-green-400 sm:h-7 sm:w-7" />
@@ -19,14 +23,17 @@ export default function SecurityOverridePage() {
             Emergency lock, unlock, and alert controls for the RAG-ED security subsystem
           </p>
         </div>
+        </FadeIn>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <InfoCard icon={<CheckCircle className="h-5 w-5 text-green-500" />} title="System" value="Online" />
-          <InfoCard icon={<Shield className="h-5 w-5 text-blue-500" />} title="Auth" value="Verified" />
-          <InfoCard icon={<AlertTriangle className="h-5 w-5 text-yellow-500" />} title="Alerts" value="None" />
-        </div>
+        <Stagger className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+          <StaggerItem><InfoCard icon={<CheckCircle className="h-5 w-5 text-green-500" />} title="System" value="Online" /></StaggerItem>
+          <StaggerItem><InfoCard icon={<Shield className="h-5 w-5 text-blue-500" />} title="Auth" value="Verified" /></StaggerItem>
+          <StaggerItem><InfoCard icon={<AlertTriangle className="h-5 w-5 text-yellow-500" />} title="Alerts" value="None" /></StaggerItem>
+        </Stagger>
 
+        <FadeIn delay={0.15}>
         <EnhancedOverrideControl />
+        </FadeIn>
 
         {isDemoMode && (
           <p className="text-center text-sm text-gray-400 mt-4">
@@ -86,38 +93,44 @@ function EnhancedOverrideControl() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <button
+        <motion.button
           onClick={() => sendCommand('LOCK')}
-          className="group flex flex-col items-center gap-3 rounded-2xl border-2 border-red-100 bg-red-50 p-5 transition-all hover:border-red-300 hover:bg-red-100 sm:p-6"
+          whileHover={{ scale: 1.03, y: -2 }}
+          whileTap={tapScale}
+          className="group flex flex-col items-center gap-3 rounded-2xl border-2 border-red-100 bg-red-50 p-5 transition-colors hover:border-red-300 hover:bg-red-100 sm:p-6"
         >
           <div className="p-3 rounded-xl bg-red-500 text-white group-hover:scale-110 transition-transform">
             <Lock className="h-7 w-7" />
           </div>
           <span className="font-semibold text-red-700">Lock</span>
           <span className="text-xs text-red-400">Halt all motors</span>
-        </button>
+        </motion.button>
 
-        <button
+        <motion.button
           onClick={() => sendCommand('UNLOCK')}
-          className="group flex flex-col items-center gap-3 rounded-2xl border-2 border-green-100 bg-green-50 p-5 transition-all hover:border-green-300 hover:bg-green-100 sm:p-6"
+          whileHover={{ scale: 1.03, y: -2 }}
+          whileTap={tapScale}
+          className="group flex flex-col items-center gap-3 rounded-2xl border-2 border-green-100 bg-green-50 p-5 transition-colors hover:border-green-300 hover:bg-green-100 sm:p-6"
         >
           <div className="p-3 rounded-xl bg-green-500 text-white group-hover:scale-110 transition-transform">
             <Unlock className="h-7 w-7" />
           </div>
           <span className="font-semibold text-green-700">Unlock</span>
           <span className="text-xs text-green-400">Resume operation</span>
-        </button>
+        </motion.button>
 
-        <button
+        <motion.button
           onClick={() => sendCommand('ALERT')}
-          className="group flex flex-col items-center gap-3 rounded-2xl border-2 border-yellow-100 bg-yellow-50 p-5 transition-all hover:border-yellow-300 hover:bg-yellow-100 sm:p-6"
+          whileHover={{ scale: 1.03, y: -2 }}
+          whileTap={tapScale}
+          className="group flex flex-col items-center gap-3 rounded-2xl border-2 border-yellow-100 bg-yellow-50 p-5 transition-colors hover:border-yellow-300 hover:bg-yellow-100 sm:p-6"
         >
           <div className="p-3 rounded-xl bg-yellow-500 text-white group-hover:scale-110 transition-transform">
             <Bell className="h-7 w-7" />
           </div>
           <span className="font-semibold text-yellow-700">Alert</span>
           <span className="text-xs text-yellow-500">Trigger alarm</span>
-        </button>
+        </motion.button>
       </div>
     </div>
   );

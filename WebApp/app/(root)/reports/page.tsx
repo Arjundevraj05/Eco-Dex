@@ -15,6 +15,9 @@ import {
 } from 'chart.js';
 import CountUp from 'react-countup';
 import { BarChart3, Leaf, Trash2, TrendingUp } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { FadeIn, Stagger, StaggerItem } from '@/components/AnimatedSection';
+import { cardHover } from '@/lib/motion';
 
 ChartJS.register(
   ArcElement, Tooltip, Legend, CategoryScale, LinearScale,
@@ -156,7 +159,7 @@ const ReportsPage = () => {
   return (
     <div className="min-h-screen bg-green-50 px-4 py-6 sm:px-6 sm:py-8">
       <div className="mx-auto max-w-5xl">
-        {/* Header */}
+        <FadeIn>
         <div className="mb-6 rounded-2xl bg-gradient-to-r from-green-600 to-emerald-500 p-5 text-white shadow-lg sm:mb-8 sm:p-6">
           <div className="mb-2 flex items-center gap-3">
             <BarChart3 className="h-6 w-6 sm:h-7 sm:w-7" />
@@ -167,32 +170,38 @@ const ReportsPage = () => {
             Waste collection breakdown, trends, and environmental impact metrics
           </p>
         </div>
+        </FadeIn>
 
-        {/* Summary cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
+        <Stagger className="mb-8 grid grid-cols-1 gap-5 sm:grid-cols-3">
+          <StaggerItem>
           <SummaryCard
             icon={<Trash2 className="h-6 w-6 text-green-600" />}
             label="Total Collected"
             value={totalWasteCount}
             accent="border-green-500"
           />
+          </StaggerItem>
+          <StaggerItem>
           <SummaryCard
             icon={<Leaf className="h-6 w-6 text-emerald-600" />}
             label="Biodegradable"
             value={biodegradableCount}
             accent="border-emerald-500"
           />
+          </StaggerItem>
+          <StaggerItem>
           <SummaryCard
             icon={<TrendingUp className="h-6 w-6 text-orange-500" />}
             label="Non-Biodegradable"
             value={totalWasteCount - biodegradableCount}
             accent="border-orange-400"
           />
-        </div>
+          </StaggerItem>
+        </Stagger>
 
-        {/* Charts row */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-          <div className="bg-white rounded-2xl shadow-md p-6 border border-green-100">
+        <Stagger className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <StaggerItem>
+          <div className="rounded-2xl border border-green-100 bg-white p-6 shadow-md">
             <h2 className="text-lg font-semibold text-gray-800 mb-1">Waste Composition</h2>
             <p className="text-xs text-gray-400 mb-4">By material type</p>
             <div className="max-w-[220px] mx-auto">
@@ -202,42 +211,47 @@ const ReportsPage = () => {
               />
             </div>
           </div>
+          </StaggerItem>
 
-          <div className="bg-white rounded-2xl shadow-md p-6 border border-green-100">
+          <StaggerItem>
+          <div className="rounded-2xl border border-green-100 bg-white p-6 shadow-md">
             <h2 className="text-lg font-semibold text-gray-800 mb-1">Weekly Trends</h2>
             <p className="text-xs text-gray-400 mb-4">Collections per day</p>
             <div className="h-56">
               <Line data={lineData} options={{ ...chartOptions, maintainAspectRatio: false }} />
             </div>
           </div>
-        </div>
+          </StaggerItem>
+        </Stagger>
 
-        {/* Bottom row */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-white rounded-2xl shadow-md p-6 border border-green-100">
+        <Stagger className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <StaggerItem>
+          <div className="rounded-2xl border border-green-100 bg-white p-6 shadow-md">
             <h2 className="text-lg font-semibold text-gray-800 mb-4">Material Breakdown</h2>
             <div className="space-y-3">
-              {classBreakdown.map(({ label, count, color }) => (
+              {classBreakdown.map(({ label, count, color }, index) => (
                 <div key={label}>
-                  <div className="flex justify-between text-sm mb-1">
+                  <div className="mb-1 flex justify-between text-sm">
                     <span className="text-gray-600">{label}</span>
                     <span className="font-semibold text-gray-800">{count}</span>
                   </div>
-                  <div className="h-2.5 bg-gray-100 rounded-full overflow-hidden">
-                    <div
-                      className="h-full rounded-full transition-all duration-700"
-                      style={{
-                        width: totalWasteCount ? `${(count / totalWasteCount) * 100}%` : '0%',
-                        backgroundColor: color,
-                      }}
+                  <div className="h-2.5 overflow-hidden rounded-full bg-gray-100">
+                    <motion.div
+                      className="h-full rounded-full"
+                      initial={{ width: 0 }}
+                      animate={{ width: totalWasteCount ? `${(count / totalWasteCount) * 100}%` : '0%' }}
+                      transition={{ duration: 0.8, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                      style={{ backgroundColor: color }}
                     />
                   </div>
                 </div>
               ))}
             </div>
           </div>
+          </StaggerItem>
 
-          <div className="bg-white rounded-2xl shadow-md p-6 border border-green-100">
+          <StaggerItem>
+          <div className="rounded-2xl border border-green-100 bg-white p-6 shadow-md">
             <h2 className="text-lg font-semibold text-gray-800 mb-1">Biodegradability Split</h2>
             <p className="text-xs text-gray-400 mb-4">Environmental classification</p>
             <div className="h-48">
@@ -254,7 +268,8 @@ const ReportsPage = () => {
               </span>
             </div>
           </div>
-        </div>
+          </StaggerItem>
+        </Stagger>
       </div>
     </div>
   );
@@ -269,7 +284,10 @@ function SummaryCard({
   accent: string;
 }) {
   return (
-    <div className={`rounded-2xl border-l-4 bg-white p-4 shadow-md transition-shadow hover:shadow-lg sm:p-5 ${accent}`}>
+    <motion.div
+      whileHover={cardHover}
+      className={`rounded-2xl border-l-4 bg-white p-4 shadow-md transition-shadow hover:shadow-lg sm:p-5 ${accent}`}
+    >
       <div className="mb-3 flex items-center gap-3">
         <div className="rounded-lg bg-green-50 p-2">{icon}</div>
         <p className="text-sm font-medium text-gray-500">{label}</p>
@@ -277,7 +295,7 @@ function SummaryCard({
       <p className="text-3xl font-bold text-gray-800 sm:text-4xl">
         <CountUp end={value} duration={2} />
       </p>
-    </div>
+    </motion.div>
   );
 }
 

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
   HomeIcon,
   DocumentReportIcon,
@@ -63,18 +64,24 @@ const Sidebar: React.FC = () => {
         <div className="w-6" />
       </div>
 
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-[1100] bg-black/50 md:hidden"
-          onClick={() => setIsOpen(false)}
-          aria-hidden="true"
-        />
-      )}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            className="fixed inset-0 z-[1100] bg-black/50 md:hidden"
+            onClick={() => setIsOpen(false)}
+            aria-hidden="true"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          />
+        )}
+      </AnimatePresence>
 
       <aside
         className={`fixed left-0 z-[1110] w-52 bg-gray-50 text-black border-r-2 shadow-lg
           top-14 bottom-0 md:top-0
-          transition-transform duration-300 ease-in-out
+          transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}
           md:translate-x-0`}
       >
@@ -86,8 +93,13 @@ const Sidebar: React.FC = () => {
 
           <nav className="flex-1">
             <ul className="space-y-1">
-              {navigation.map((item) => (
-                <li key={item.name}>
+              {navigation.map((item, index) => (
+                <motion.li
+                  key={item.name}
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.05, duration: 0.3 }}
+                >
                   <Link
                     href={item.href}
                     onClick={() => setIsOpen(false)}
@@ -104,7 +116,7 @@ const Sidebar: React.FC = () => {
                     />
                     <span className="ml-2 text-sm leading-tight">{item.name}</span>
                   </Link>
-                </li>
+                </motion.li>
               ))}
             </ul>
           </nav>

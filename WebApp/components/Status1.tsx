@@ -3,6 +3,9 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import CountUp from "react-countup";
 import { Coins, Leaf } from "lucide-react";
+import { motion } from "framer-motion";
+import { Stagger, StaggerItem } from "@/components/AnimatedSection";
+import { cardHover, tapScale } from "@/lib/motion";
 
 interface WasteItem {
   isBiodegradable: boolean;
@@ -29,8 +32,10 @@ function ImpactCard({
   valueColor: string;
 }) {
   return (
-    <div
-      className={`flex h-36 w-full max-w-sm cursor-pointer flex-row items-center rounded-lg bg-gradient-to-b ${gradient} p-[2px] transition-transform duration-200 hover:scale-105 sm:w-72 sm:max-w-none`}
+    <motion.div
+      className={`flex h-36 w-full max-w-sm cursor-pointer flex-row items-center rounded-lg bg-gradient-to-b ${gradient} p-[2px] sm:w-72 sm:max-w-none`}
+      whileHover={cardHover}
+      whileTap={tapScale}
     >
       <div className="flex h-full w-full items-center rounded-lg bg-gray-50 p-4 sm:p-5">
         <div className={`shrink-0 rounded-full bg-gradient-to-b p-2.5 sm:p-3 ${iconBg}`}>
@@ -44,7 +49,7 @@ function ImpactCard({
           </p>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -103,7 +108,8 @@ const Status1 = () => {
   }
 
   return (
-    <div className="mb-6 mt-6 flex flex-wrap justify-center gap-3 sm:mt-10 sm:gap-4">
+    <Stagger className="mb-6 mt-6 flex flex-wrap justify-center gap-3 sm:mt-10 sm:gap-4">
+      <StaggerItem>
       <ImpactCard
         gradient="from-green-300 to-green-500"
         iconBg="from-green-100 to-green-200"
@@ -113,6 +119,8 @@ const Status1 = () => {
         titleColor="text-green-800"
         valueColor="text-green-900"
       />
+      </StaggerItem>
+      <StaggerItem>
       <ImpactCard
         gradient="from-red-300 to-red-500"
         iconBg="from-red-100 to-red-200"
@@ -122,6 +130,8 @@ const Status1 = () => {
         titleColor="text-red-800"
         valueColor="text-red-900"
       />
+      </StaggerItem>
+      <StaggerItem>
       <ImpactCard
         gradient="from-gray-300 to-gray-500"
         iconBg="from-gray-100 to-gray-200"
@@ -132,6 +142,8 @@ const Status1 = () => {
         titleColor="text-gray-700"
         valueColor="text-gray-800"
       />
+      </StaggerItem>
+      <StaggerItem>
       <ImpactCard
         gradient="from-yellow-300 to-yellow-500"
         iconBg="from-yellow-100 to-yellow-200"
@@ -141,7 +153,8 @@ const Status1 = () => {
         titleColor="text-yellow-800"
         valueColor="text-yellow-900"
       />
-    </div>
+      </StaggerItem>
+    </Stagger>
   );
 };
 
